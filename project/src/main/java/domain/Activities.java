@@ -10,14 +10,17 @@ import java.sql.Time;
 @Entity
 public class Activities extends BaseEntity implements Comparable<Activities>{
 
+    private static final String STATUS="status";
+
     @Column(columnDefinition = "text")
     private String description;
 
-   // @Temporal(TemporalType.TIME)
-    private Time time;
 
-    @Column(name = "status")
+    private Time timeTask;
+
+    @Column(name = STATUS)
     private StateOfActivity stateOfActivity;
+
 
     public Activities(){
 
@@ -27,24 +30,19 @@ public class Activities extends BaseEntity implements Comparable<Activities>{
         this.description = description;
     }
 
-    public Activities(String description , Time time){
 
-        this.description=description;
-        this.time=time;
-    }
-
-    public Activities(String description, Time time, StateOfActivity stateOfActivity) {
+    public Activities(String description, Time timeTask, StateOfActivity stateOfActivity) {
         this.description = description;
-        this.time = time;
+        this.timeTask = timeTask;
         this.stateOfActivity = stateOfActivity;
     }
 
-    public Time getTime() {
-        return time;
+    public Time getTimeTask() {
+        return timeTask;
     }
 
-    public void setTime(Time time) {
-        this.time = time;
+    public void setTimeTask(Time time) {
+        this.timeTask = time;
     }
 
 
@@ -69,7 +67,7 @@ public class Activities extends BaseEntity implements Comparable<Activities>{
         return "Activities{" +
                 "id=" + getId() +
                 ", description='" + description + '\'' +
-                ", time=" + time +
+                ", time=" + timeTask +
                 ", stateOfActivity=" + stateOfActivity +
                 '}';
     }
@@ -77,6 +75,6 @@ public class Activities extends BaseEntity implements Comparable<Activities>{
     @Override
     public int compareTo(Activities o) {
 
-         return this.time.compareTo(o.time);
+         return this.timeTask.compareTo(o.timeTask);
     }
 }
