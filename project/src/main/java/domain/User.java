@@ -7,24 +7,29 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {User.USER_NAME,User.NATIONAL_CODE}))
 public class User extends BaseEntity implements Cloneable {
 
+    public static final String NATIONAL_CODE ="national_code";
+    public static final String USER_NAME ="username";
+    public static final String USER_ID="user_id";
 
     private String name;
 
     private String family;
 
-    @Column(name = "national_code")
+    @Column(name = NATIONAL_CODE)
     private String nationalCode;
 
-
+    @Column(nullable = false)
     private String userName;
 
+    @Column(nullable = false)
     private String password;
 
 
     @OneToMany
+    @JoinColumn(name= USER_ID)
     private List<Activities> activities=new LinkedList<>();
 
     public User() {
@@ -36,13 +41,6 @@ public class User extends BaseEntity implements Cloneable {
         this.name = name;
         this.family = family;
         this.nationalCode = nationalCode;
-    }
-
-    public User(String name, String family, String nationalCode, List<Activities> activities) {
-        this.name = name;
-        this.family = family;
-        this.nationalCode = nationalCode;
-        this.activities = activities;
     }
 
 

@@ -9,7 +9,6 @@ import service.impl.BaseServiceImpl;
 import util.HibernateUtil;
 
 import java.sql.Time;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -106,7 +105,7 @@ public class UserService extends BaseServiceImpl<User, UserRepo> {
                 activityService.showActivity(user.getActivities());
     }
 
-    public void addActivity(User user) throws CloneNotSupportedException {
+    public void addActivity(User user) {
 
         List<Activities> list = new LinkedList<>();
 
