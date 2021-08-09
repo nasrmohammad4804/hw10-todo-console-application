@@ -95,19 +95,9 @@ public class MyLinkedList<E> implements Iterable<E>, Cloneable {
             head = node;
 
         } else {
-            Node temp = null;
-            Node test = head;
-            int str = 0;
 
-            while (head != null) {
+            Node temp=getNode(index);
 
-                if (str == index) {
-                    temp = test;
-                    break;
-                }
-                str++;
-                test = test.next;
-            }
 
             assert temp != null;
             Node last = temp.prev;
@@ -170,24 +160,13 @@ public class MyLinkedList<E> implements Iterable<E>, Cloneable {
 
         } else {
 
-            Node temp = head;
+            Node temp = getNode(index);
+            Node temp2 = temp.prev;
+            temp.prev.next = temp.next;
+            temp.next.prev = temp2;
 
-            while (temp != null) {
+            result = temp.data;
 
-                if (temp.data.equals(element)) {
-
-
-                    Node temp2 = temp.prev;
-                    temp.prev.next = temp.next;
-                    temp.next.prev = temp2;
-
-                    result = temp.data;
-                    break;
-                }
-
-                temp = temp.next;
-
-            }
         }
 
         size--;
@@ -227,6 +206,9 @@ public class MyLinkedList<E> implements Iterable<E>, Cloneable {
 
     public E get(int index) {
 
+        return getNode(index).data;
+    }
+    private Node getNode(int index){
         if (!(index >= 0 && index < size)) {
             throw new IndexOutOfBoundsException("out of bound !!");
         }
@@ -236,13 +218,13 @@ public class MyLinkedList<E> implements Iterable<E>, Cloneable {
             Node first=head;
             for(int i=0; i<index; i++)
                 first=first.next;
-            return first.data;
+            return first;
         }else {
             Node last=tail;
             for (int i = size-1; i > index ; i--)
                 last=last.prev;
 
-            return last.data;
+            return last;
 
         }
     }
@@ -299,15 +281,7 @@ public class MyLinkedList<E> implements Iterable<E>, Cloneable {
         if (!(index >= 0 && index < size))
             throw new IndexOutOfBoundsException("index : " + index + ", size:" + size);
 
-        int i = 0;
-        for (Node node = head; node != null; ) {
-
-            if (i==index)
-                node.data = element;
-
-            i++;
-            node = node.next;
-        }
+        getNode(index).data=element;
     }
 
     @Override
