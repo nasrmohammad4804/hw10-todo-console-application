@@ -231,15 +231,20 @@ public class MyLinkedList<E> implements Iterable<E>, Cloneable {
             throw new IndexOutOfBoundsException("out of bound !!");
         }
 
-        int i = 0;
-        for (Node str = head; str != null; i++) {
+        if(index < size>>1){
 
-            if (i == index)
-                return str.data;
-            str = str.next;
+            Node first=head;
+            for(int i=0; i<index; i++)
+                first=first.next;
+            return first.data;
+        }else {
+            Node last=tail;
+            for (int i = size-1; i > index ; i--)
+                last=last.prev;
+
+            return last.data;
+
         }
-
-        return null;
     }
 
 
