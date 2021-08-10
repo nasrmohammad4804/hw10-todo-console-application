@@ -5,6 +5,8 @@ import domain.enumaration.StateOfActivity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.sql.Time;
 
 @Entity
@@ -18,6 +20,7 @@ public class Activities extends BaseEntity implements Comparable<Activities>{
 
     private Time timeTask;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = STATUS)
     private StateOfActivity stateOfActivity;
 
