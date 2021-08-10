@@ -95,7 +95,7 @@ public class MyLinkedList<E> implements Iterable<E>, Cloneable {
 
         } else {
 
-            Node temp=getNode(index);
+            Node temp = getNode(index);
 
 
             assert temp != null;
@@ -206,21 +206,22 @@ public class MyLinkedList<E> implements Iterable<E>, Cloneable {
 
         return getNode(index).data;
     }
-    private Node getNode(int index){
+
+    private Node getNode(int index) {
         if (!(index >= 0 && index < size)) {
             throw new IndexOutOfBoundsException("out of bound !!");
         }
 
-        if(index < size>>1){
+        if (index < size >> 1) {
 
-            Node first=head;
-            for(int i=0; i<index; i++)
-                first=first.next;
+            Node first = head;
+            for (int i = 0; i < index; i++)
+                first = first.next;
             return first;
-        }else {
-            Node last=tail;
-            for (int i = size-1; i > index ; i--)
-                last=last.prev;
+        } else {
+            Node last = tail;
+            for (int i = size - 1; i > index; i--)
+                last = last.prev;
 
             return last;
 
@@ -279,7 +280,7 @@ public class MyLinkedList<E> implements Iterable<E>, Cloneable {
         if (!(index >= 0 && index < size))
             throw new IndexOutOfBoundsException("index : " + index + ", size:" + size);
 
-        getNode(index).data=element;
+        getNode(index).data = element;
     }
 
     @Override
@@ -288,7 +289,7 @@ public class MyLinkedList<E> implements Iterable<E>, Cloneable {
     }
     //add cache to myLinkedList
 
-    public class LRUCache<K,V>{
+    public static class LRUCache<K, V> {
 
         private class Node {
             K key;
@@ -302,10 +303,11 @@ public class MyLinkedList<E> implements Iterable<E>, Cloneable {
             }
 
         }
+
         private Node head;
         private Node tail;
         private int capacity;
-        private final int defaultCapacity=5;
+        private final int defaultCapacity = 5;
 
 
         private HashMap<K, Node> map;
@@ -317,10 +319,10 @@ public class MyLinkedList<E> implements Iterable<E>, Cloneable {
 
         }
 
-        public LRUCache(){
+        public LRUCache() {
 
-            capacity=defaultCapacity;
-            map=new HashMap<>();
+            capacity = defaultCapacity;
+            map = new HashMap<>();
         }
 
         public V get(K key) {
@@ -338,8 +340,10 @@ public class MyLinkedList<E> implements Iterable<E>, Cloneable {
         private void delete(Node node) {
 
 
-            if (node.next == null)
+            if (node.next == null){
                 tail = node.pre;
+                tail.next=null;
+            }
 
             else if (node.pre != null) {
                 node.pre.next = node.next;
@@ -392,27 +396,32 @@ public class MyLinkedList<E> implements Iterable<E>, Cloneable {
             return oldValue;
 
         }
-        public Set<? extends K> keySet(){
 
-            Set<K> set=new HashSet<>();
+        public Set<? extends K> keySet() {
 
-            for(Node node=head ; node!=null; ){
-                set.add(node.key);
-
-                node=node.next;
-            }
-
-            return set;
+            return map.keySet();
         }
 
-        public Collection<? extends V> values(){
+        public Collection<? extends V> values() {
 
-            Collection<V> collection=new ArrayList<>();
+            Collection<V> collection = new ArrayList<>();
 
-            for(Node node=head; node!=null; node=node.next ){
+            for (Node node = head; node != null; node = node.next) {
                 collection.add(node.value);
             }
             return collection;
+        }
+
+        @Override
+        public String toString() {
+
+            StringBuilder str = new StringBuilder("{");
+
+            for (Node temp = head; temp != null; temp = temp.next) {
+
+                str.append(temp.key).append("=").append(temp.value).append(",");
+            }
+            return str.substring(0, str.lastIndexOf(",")).concat("}");
         }
     }
 }

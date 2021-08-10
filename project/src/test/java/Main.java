@@ -1,8 +1,10 @@
+import java.util.LinkedHashMap;
+
 public class Main {
 
     public static void main(String[] args) {
 
-        MyLinkedList<String> myLinkedList=new MyLinkedList<>();
+    /*    MyLinkedList<String> myLinkedList=new MyLinkedList<>();
 
         myLinkedList.add("ali");
         myLinkedList.add("javad");
@@ -37,7 +39,31 @@ public class Main {
 
         System.out.println("***************************");
         for(Object ob : myLinkedList.toArray())
-            System.out.println(ob);
+            System.out.println(ob);*/
+
+
+        System.out.println("##################################################");
+
+        MyLinkedList.LRUCache<Integer,String> lruCache=new MyLinkedList.LRUCache<>();
+
+        System.out.println(lruCache.get(12));
+
+        lruCache.put(15,"mohammad");
+        lruCache.put(11,"javad");
+        lruCache.put(13,"aida");
+        lruCache.put(26,"reza");
+
+        System.out.println(lruCache);
+
+        System.out.println(lruCache.put(11,"zahra"));
+        System.out.println(lruCache);
+
+        System.out.println(lruCache.put(34,"farshid"));
+        System.out.println(lruCache);
+
+        System.out.println(lruCache.put(15,"masoud"));
+
+        System.out.println(lruCache);
 
     }
 }
