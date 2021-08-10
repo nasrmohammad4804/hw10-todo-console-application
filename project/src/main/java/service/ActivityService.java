@@ -22,8 +22,12 @@ public class ActivityService extends BaseServiceImpl<Activities, ActivityRepo> {
 
     public void showActivity(List<Activities> activities) {
 
-        Scanner scanner = new Scanner(System.in);
+        if(activities.isEmpty()){
+            System.out.println("dont activity yet\n\n");
+            return;
+        }
 
+        Scanner scanner = new Scanner(System.in);
         System.out.println("if you want show Ascending enter asc \nif you want Descending enter desc ");
         String result = scanner.nextLine();
 
@@ -45,10 +49,7 @@ public class ActivityService extends BaseServiceImpl<Activities, ActivityRepo> {
 
     private void showDescendingActivity(List<Activities> activities) {
 
-        if(activities.isEmpty()){
-            System.out.println("dont activity yet\n\n");
-            return;
-        }
+
         activities.stream().sorted(Comparator.reverseOrder()).forEach(System.out::println);
 
         System.out.println("--------------------------------");
@@ -56,10 +57,6 @@ public class ActivityService extends BaseServiceImpl<Activities, ActivityRepo> {
 
     private void showAccendingActivity(List<Activities> activities) {
 
-        if(activities.isEmpty()){
-            System.out.println("dont activity yet\n\n");
-            return;
-        }
         activities.stream().sorted().forEach(System.out::println);
 
         System.out.println("--------------------------------");
