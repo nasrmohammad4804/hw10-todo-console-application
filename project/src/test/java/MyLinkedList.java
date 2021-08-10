@@ -1,5 +1,4 @@
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 
 public class MyLinkedList<E> implements Iterable<E>, Cloneable {
 
@@ -146,7 +145,6 @@ public class MyLinkedList<E> implements Iterable<E>, Cloneable {
 
     public E remove(int index) {
 
-        E element = get(index);
         E result = null;
 
         if (index == 0) {
@@ -287,6 +285,135 @@ public class MyLinkedList<E> implements Iterable<E>, Cloneable {
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
+    }
+    //add cache to myLinkedList
+
+    public class LRUCache<K,V>{
+
+        private class Node {
+            K key;
+            V value;
+            Node pre;
+            Node next;
+
+            Node(K key, V value) {
+                this.key = key;
+                this.value = value;
+            }
+
+        }
+        private Node head;
+        private Node tail;
+        private int capacity;
+        private final int defaultCapacity=5;
+
+
+        private HashMap<K, Node> map;
+
+        public LRUCache(int capacity) {
+
+            this.capacity = capacity;
+            map = new HashMap<>();
+
+        }
+
+        public LRUCache(){
+
+            capacity=defaultCapacity;
+            map=new HashMap<>();
+        }
+
+        public V get(K key) {
+
+            if (map.containsKey(key)) {
+
+                Node node = map.get(key);
+                delete(node);
+                setHead(node);
+                return node.value;
+            }
+            return null;
+        }
+
+        private void delete(Node node) {
+
+
+            if (node.next == null)
+                tail = node.pre;
+
+            else if (node.pre != null) {
+                node.pre.next = node.next;
+                node.next.pre = node.pre;
+
+            } else head = node.next;
+
+        }
+
+        private void setHead(Node node) {
+
+            node.next = head;
+            node.pre = null;
+
+            if (head != null)
+                head.pre = node;
+
+            head = node;
+
+            if (tail == null)
+                tail = head;
+        }
+
+        public V put(K key, V value) {
+
+            V oldValue = null;
+            if (map.containsKey(key)) {
+
+                Node old = map.get(key);
+                oldValue = old.value;
+
+                if (!old.value.equals(value))
+                    old.value = value;
+
+                delete(old);
+                setHead(old);
+            } else {
+                if (map.size() >= capacity) {
+
+                    map.remove(tail.key);
+                    delete(tail);
+
+                }
+
+                Node newNode = new Node(key, value);
+                setHead(newNode);
+                map.put(key, newNode);
+            }
+
+            return oldValue;
+
+        }
+        public Set<? extends K> keySet(){
+
+            Set<K> set=new HashSet<>();
+
+            for(Node node=head ; node!=null; ){
+                set.add(node.key);
+
+                node=node.next;
+            }
+
+            return set;
+        }
+
+        public Collection<? extends V> values(){
+
+            Collection<V> collection=new ArrayList<>();
+
+            for(Node node=head; node!=null; node=node.next ){
+                collection.add(node.value);
+            }
+            return collection;
+        }
     }
 }
 
