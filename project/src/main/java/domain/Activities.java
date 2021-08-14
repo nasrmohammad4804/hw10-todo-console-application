@@ -67,12 +67,11 @@ public class Activities extends BaseEntity implements Comparable<Activities>{
 
     @Override
     public String toString() {
-        return "Activities{" +
+        return
                 "id=" + getId() +
                 ", description='" + description + '\'' +
                 ", time=" + timeTask +
-                ", stateOfActivity=" + stateOfActivity +
-                '}';
+                ", stateOfActivity=" + stateOfActivity;
     }
 
     @Override

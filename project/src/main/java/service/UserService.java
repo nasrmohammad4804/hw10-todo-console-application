@@ -107,39 +107,25 @@ public class UserService extends BaseServiceImpl<User, UserRepo> {
 
     public void addActivity(User user) {
 
-        List<Activities> list = new LinkedList<>();
 
-        System.out.println("enter number of activity ");
-        int number = scannerForInteger.nextInt();
+        System.out.println("enter your task ..");
+        String task = scannerForString.nextLine();
 
-        int counter = 0;
+        System.out.println("enter time ");
 
-        while (counter++ < number) {
-            System.out.println("enter your task ..");
-            String task = scannerForString.nextLine();
+        Time time = Time.valueOf(scannerForString.nextLine());
 
-            System.out.println("enter time ");
 
-            Time time = Time.valueOf(scannerForString.nextLine());
-
-            System.out.println("enter status");
-
-            for (StateOfActivity str : StateOfActivity.values())
-                System.out.println(str.name());
-
-            StateOfActivity state = StateOfActivity.valueOf(scannerForString.nextLine());
-
-            list.add(new Activities(task, time, state));
-        }
+        Activities activity = new Activities(task, time, StateOfActivity.OPEN);
 
         Session session = HibernateUtil.getSESSION();
 
         session.getTransaction().begin();
 
-        user.getActivities().addAll(list);
+        user.getActivities().add(activity);
 
         repository.add(user);
-        activityService.addActivity(list);
+        activityService.addActivity(activity);
         session.getTransaction().commit();
 
     }

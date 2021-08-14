@@ -6,9 +6,11 @@ import domain.enumaration.StateOfActivity;
 import repository.ActivityRepo;
 import service.impl.BaseServiceImpl;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class ActivityService extends BaseServiceImpl<Activities, ActivityRepo> {
 
@@ -22,7 +24,7 @@ public class ActivityService extends BaseServiceImpl<Activities, ActivityRepo> {
 
     public void showActivity(List<Activities> activities) {
 
-        if(activities.isEmpty()){
+        if (activities.isEmpty()) {
             System.out.println("dont activity yet\n\n");
             return;
         }
@@ -34,7 +36,7 @@ public class ActivityService extends BaseServiceImpl<Activities, ActivityRepo> {
         switch (result) {
 
             case "asc":
-                showAccendingActivity(activities);
+                showAscendingActivity(activities);
                 break;
 
             case "desc":
@@ -49,23 +51,24 @@ public class ActivityService extends BaseServiceImpl<Activities, ActivityRepo> {
 
     private void showDescendingActivity(List<Activities> activities) {
 
-
+        System.out.printf("%50s\n", "***************|All Activity|***************");
         activities.stream().sorted(Comparator.reverseOrder()).forEach(System.out::println);
 
-        System.out.println("--------------------------------");
+        System.out.printf("%48s \n","------------------------------------------");
     }
 
-    private void showAccendingActivity(List<Activities> activities) {
+    private void showAscendingActivity(List<Activities> activities) {
 
+        System.out.printf("%50s\n", "***************|All Activity|***************");
         activities.stream().sorted().forEach(System.out::println);
 
-        System.out.println("--------------------------------");
+        System.out.printf("%48s \n","------------------------------------------");
     }
 
-    public void addActivity(List<Activities> activities) {  // move to userService
+    public void addActivity(Activities activities) {  // move to userService
 
-        for (Activities activity : activities)
-            repository.add(activity);
+
+        repository.add(activities);
 
     }
 
@@ -87,24 +90,29 @@ public class ActivityService extends BaseServiceImpl<Activities, ActivityRepo> {
         try {
 
             Activities activities = list.stream().filter(x -> x.getId() == number).findFirst().get();
-            System.out.println(activities.getStateOfActivity());
+            System.out.println("status of this activity is : "+activities.getStateOfActivity()+"\n");
 
-            System.out.println("enter status");
+            System.out.print("enter status from  ");
+          List<StateOfActivity> myList =  Arrays.stream(StateOfActivity.values()).filter(x -> x.getNumber()>activities.
+                    getStateOfActivity().getNumber()).collect(Collectors.toList());
+
+            System.out.println(myList);
 
             StateOfActivity state = StateOfActivity.valueOf(scannerForString.nextLine());
 
-            if ( !state.equals(activities.getStateOfActivity())){
+            if (state.getNumber() > activities.getStateOfActivity().getNumber()) {
 
                 activities.setStateOfActivity(state);
-                System.out.println("state change to "+state+"\n\n");
-            }
+                System.out.println("state change to " + state + "\n\n");
+            } else System.out.println("not possible to change status -_- ..");
 
         } catch (Exception e) {
             System.out.println("this activityNumber not exists !!!");
         }
 
     }
-    public List<Activities> getAllActivity(User user){
+
+    public List<Activities> getAllActivity(User user) {
 
         return repository.getAllActivity(user);
     }
