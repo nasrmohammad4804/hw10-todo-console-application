@@ -1,6 +1,6 @@
 package domain;
 
-import base.BaseEntity;
+import base.domain.BaseEntity;
 import domain.enumaration.StateOfActivity;
 
 import javax.persistence.Column;
@@ -10,7 +10,7 @@ import javax.persistence.Enumerated;
 import java.sql.Time;
 
 @Entity
-public class Activities extends BaseEntity implements Comparable<Activities>{
+public class Activity extends BaseEntity<Long> implements Comparable<Activity> {
 
     private static final String STATUS="status";
 
@@ -25,16 +25,16 @@ public class Activities extends BaseEntity implements Comparable<Activities>{
     private StateOfActivity stateOfActivity;
 
 
-    public Activities(){
+    public Activity(){
 
     }
 
-    public Activities(String description) {
+    public Activity(String description) {
         this.description = description;
     }
 
 
-    public Activities(String description, Time timeTask, StateOfActivity stateOfActivity) {
+    public Activity(String description, Time timeTask, StateOfActivity stateOfActivity) {
         this.description = description;
         this.timeTask = timeTask;
         this.stateOfActivity = stateOfActivity;
@@ -69,14 +69,14 @@ public class Activities extends BaseEntity implements Comparable<Activities>{
     public String toString() {
         return
                 "id=" + getId() +
-                ", description='" + description + '\'' +
-                ", time=" + timeTask +
-                ", stateOfActivity=" + stateOfActivity;
+                        ", description='" + description + '\'' +
+                        ", time=" + timeTask +
+                        ", stateOfActivity=" + stateOfActivity;
     }
 
     @Override
-    public int compareTo(Activities o) {
+    public int compareTo(Activity o) {
 
-         return this.timeTask.compareTo(o.timeTask);
+        return this.timeTask.compareTo(o.timeTask);
     }
 }

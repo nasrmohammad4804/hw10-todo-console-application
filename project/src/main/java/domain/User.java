@@ -1,6 +1,7 @@
 package domain;
 
-import base.BaseEntity;
+
+import base.domain.BaseEntity;
 
 import javax.persistence.*;
 import java.util.LinkedList;
@@ -8,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {User.USER_NAME,User.NATIONAL_CODE}))
-public class User extends BaseEntity implements Cloneable {
+public class User extends BaseEntity<Long> implements Cloneable {
 
     public static final String NATIONAL_CODE ="national_code";
     public static final String USER_NAME ="username";
@@ -28,9 +29,9 @@ public class User extends BaseEntity implements Cloneable {
     private String password;
 
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL ,fetch = FetchType.LAZY)
     @JoinColumn(name= USER_ID)
-    private List<Activities> activities=new LinkedList<>();
+    private List<Activity> activities=new LinkedList<>();
 
     public User() {
 
@@ -84,11 +85,11 @@ public class User extends BaseEntity implements Cloneable {
         this.password = password;
     }
 
-    public List<Activities> getActivities() {
+    public List<Activity> getActivities() {
         return activities;
     }
 
-    public void setActivities(List<Activities> activities) {
+    public void setActivities(List<Activity> activities) {
         this.activities = activities;
     }
 
@@ -99,7 +100,7 @@ public class User extends BaseEntity implements Cloneable {
                 ", family='" + family + '\'' +
                 ", nationalCode='" + nationalCode + '\'' +
                 ", userName='" + userName + '\'' +
-                 activities;
+                activities;
     }
 
     @Override
