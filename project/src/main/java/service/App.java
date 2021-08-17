@@ -1,59 +1,63 @@
 package service;
 
 import domain.User;
-import repository.ActivityRepo;
-import repository.UserRepo;
-
-import java.util.Scanner;
+import service.impl.ActivityServiceImpl;
+import service.impl.UserServiceImpl;
+import service.util.ApplicationContext;
 
 public class App {
 
-    UserService userService;
-    ActivityService activityService;
+    private UserServiceImpl userService;
+    private ActivityServiceImpl activityService;
 
     public App() {
-        activityService = new ActivityService(new ActivityRepo());
-        userService = new UserService(new UserRepo(), activityService);
+
+        userService = ApplicationContext.getUserService();
+        activityService = ApplicationContext.getActivityService();
     }
 
-    public void start() throws CloneNotSupportedException {
+    public void start() {
 
         System.out.println("1.register");
         System.out.println("2.login");
         System.out.println("3.exit");
 
+        User user;
         switch (resultOfInput()) {
 
-            case 1: {
-                User user = userService.register();
+            case 1 -> {
+                user = userService.register();
 
-                if (user == null) {
-                    System.out.println("this user already exists ...");
-                    start();
-
+                if (user != null) {
+                    messageForUserEntered(user);
+                    userPanel(user);
                 }
-                userPanel(user);
+
+                start();
             }
-            case 2: {
-                User user = userService.login();
-
-                if (user == null) {
-
-                    System.out.println("this user not exists with this userName & password ..");
-                    start();
+            case 2 -> {
+                user = userService.login();
+                if (user != null) {
+                    messageForUserEntered(user);
+                    userPanel(user);
                 }
-                userPanel(user);
+
+                start();
             }
 
-            case 3 :
+            case 3 -> {
                 System.out.println("have nice day ...");
                 System.exit(0);
+            }
         }
-
-
     }
 
-    private void userPanel(User user) throws CloneNotSupportedException {
+    private void messageForUserEntered(User user) {
+
+        System.out.println("welcome " + user.getName() + "  " + user.getFamily() + ")))\n");
+    }
+
+    private void userPanel(User user) {
 
         System.out.println("1.showAllActivity");
         System.out.println("2.add activity");
@@ -64,22 +68,25 @@ public class App {
 
             case 1:
                 userService.showActivity(user);
-                 userPanel(user);
+                userPanel(user);
                 break;
 
             case 2:
-               userService.addActivity(user);
+                userService.addActivity(user);
                 userPanel(user);
                 break;
 
 
             case 3:
-                activityService.changeStatus(user);
+                activityService.updateActivity(user);
                 userPanel(user);
                 break;
 
 
-            case 4 : start();
+            case 4:
+                start();
+                break;
+
             default:
                 System.out.println("your input not valid  try again ...");
                 userPanel(user);
@@ -88,12 +95,10 @@ public class App {
 
     public int resultOfInput() {
 
-        Scanner scanner = new Scanner(System.in);
-
         int result = 0;
 
         try {
-            result = scanner.nextInt();
+            result = ApplicationContext.scannerForInteger.nextInt();
 
         } catch (Exception e) {
             System.out.println("input not valid try again !!!");
