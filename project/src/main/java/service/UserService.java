@@ -17,7 +17,6 @@ import java.util.concurrent.atomic.AtomicReference;
 public class UserService extends BaseServiceImpl<User, UserRepo> {
 
     private final Scanner scannerForString = new Scanner(System.in);
-    private final Scanner scannerForInteger = new Scanner(System.in);
 
     private final ActivityService activityService;
 
