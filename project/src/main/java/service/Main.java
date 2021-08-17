@@ -1,6 +1,7 @@
 package service;
 
-import util.HibernateUtil;
+
+import service.util.HibernateUtil;
 
 public class Main {
 
@@ -16,6 +17,6 @@ public class Main {
             e.printStackTrace();
         }
 
-        HibernateUtil.getSESSION().close();
+        HibernateUtil.getEntityManager().close();
     }
 }
