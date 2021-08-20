@@ -9,6 +9,8 @@ import java.util.List;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {User.USER_NAME,User.NATIONAL_CODE}))
+@AttributeOverrides({@AttributeOverride( name = "id", column = @Column(name = "user_id"))})  // overriding name of id with my specific name
+
 public class User extends BaseEntity<Long> implements Cloneable {
 
     public static final String NATIONAL_CODE ="national_code";
