@@ -11,8 +11,8 @@ import service.util.ApplicationContext;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ActivityServiceImpl extends BaseServiceImpl<Activity, Long, ActivityRepositoryImpl>
         implements ActivityService {
@@ -28,18 +28,42 @@ public class ActivityServiceImpl extends BaseServiceImpl<Activity, Long, Activit
             return;
         }
 
-        Scanner scanner = new Scanner(System.in);
+        System.out.println("enter sort based of witch property\n1.time\n2.state\n3.description");
+        Stream<Activity> stream = activities.stream();
+        Comparator<Activity> comparator = null;
+        switch (ApplicationContext.scannerForInteger.nextInt()) {
+
+            case 1 -> comparator = Comparator.comparing(Activity::getTimeTask);
+
+            case 2 -> comparator = Comparator.comparingInt(x -> x.getStateOfActivity().getNumber());
+
+            case 3 -> comparator = (x, y) -> {
+
+                return x.getDescription().length() > y.getDescription().length() ? 1 :
+                        x.getDescription().length() < y.getDescription().length() ? -1 :
+                                x.getDescription().compareTo(y.getDescription());
+            };
+
+            default -> {
+                System.out.println("input not valid try again !!!");
+                showActivity(activities);
+            }
+
+        }
+
+
         System.out.println("if you want show Ascending enter asc \nif you want Descending enter desc ");
-        String result = scanner.nextLine();
+
+        String result = ApplicationContext.scannerForString.nextLine();
 
         switch (result) {
 
             case "asc":
-                showAscendingActivity(activities);
+                showAscendingActivity(stream, comparator);
                 break;
 
             case "desc":
-                showDescendingActivity(activities);
+                showDescendingActivity(stream, comparator);
                 break;
             default:
                 System.out.println("your input not valid try again");
@@ -64,17 +88,16 @@ public class ActivityServiceImpl extends BaseServiceImpl<Activity, Long, Activit
 
         Long number = ApplicationContext.scannerForInteger.nextLong();
 
-
         try {
 
-            Activity activities = findByID( number); //activityList.stream().filter(x -> x.getId() == number).findFirst().get();
+            Activity activities = findByID(number); //activityList.stream().filter(x -> x.getId() == number).findFirst().get();
             System.out.println("status of this activity is : " + activities.getStateOfActivity() + "\n");
 
             System.out.print("enter status from  ");
             List<StateOfActivity> myList = Arrays.stream(StateOfActivity.values()).filter(x -> x.getNumber() > activities.
                     getStateOfActivity().getNumber()).collect(Collectors.toList());
 
-            if (myList.isEmpty()){
+            if (myList.isEmpty()) {
                 System.out.println("state is COMPLETED and not have changed !!! \n");
                 return;
             }
@@ -96,24 +119,24 @@ public class ActivityServiceImpl extends BaseServiceImpl<Activity, Long, Activit
         }
     }
 
+    public void showAscendingActivity(Stream<Activity> stream, Comparator<? super Activity> comparator) {
+
+        System.out.printf("%50s\n", "***************|All Activity|***************");
+        stream.sorted(comparator).forEach(System.out::println);
+        System.out.printf("%48s \n", "------------------------------------------");
+    }
+
+    public void showDescendingActivity(Stream<Activity> stream, Comparator<? super Activity> comparator) {
+
+        System.out.printf("%50s\n", "***************|All Activity|***************");
+        stream.sorted(comparator).sorted(Comparator.reverseOrder()).
+                forEach(System.out::println);
+        System.out.printf("%48s \n", "------------------------------------------");
+    }
+
     @Override
     public List<Activity> getAllActivity(User user) {
         return repository.getAll(user);
     }
 
-    private void showDescendingActivity(List<Activity> activities) {
-
-        System.out.printf("%50s\n", "***************|All Activity|***************");
-        activities.stream().sorted(Comparator.reverseOrder()).forEach(System.out::println);
-
-        System.out.printf("%48s \n", "------------------------------------------");
-    }
-
-    private void showAscendingActivity(List<Activity> activities) {
-
-        System.out.printf("%50s\n", "***************|All Activity|***************");
-        activities.stream().sorted().forEach(System.out::println);
-
-        System.out.printf("%48s \n", "------------------------------------------");
-    }
 }

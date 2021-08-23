@@ -3,10 +3,7 @@ package domain;
 import base.domain.BaseEntity;
 import domain.enumaration.StateOfActivity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 import java.sql.Time;
 
 @Entity
@@ -16,8 +13,6 @@ public class Activity extends BaseEntity<Long> implements Comparable<Activity> {
 
     @Column(columnDefinition = "text")
     private String description;
-
-
     private Time timeTask;
 
     @Enumerated(EnumType.STRING)
