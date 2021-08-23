@@ -90,7 +90,7 @@ public class ActivityServiceImpl extends BaseServiceImpl<Activity, Long, Activit
 
         try {
 
-            Activity activities = findByID(number); //activityList.stream().filter(x -> x.getId() == number).findFirst().get();
+            Activity activities = findByID(number);
             System.out.println("status of this activity is : " + activities.getStateOfActivity() + "\n");
 
             System.out.print("enter status from  ");
